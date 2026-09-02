@@ -173,6 +173,10 @@ const config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  // TypeScript workers can take longer than Jest's 500ms default to shut down
+  // on Windows, even when no open handles remain.
+  workerGracefulExitTimeout: 5000,
 };
 
 process.env = Object.assign(process.env, { JEST_TEST: true });
