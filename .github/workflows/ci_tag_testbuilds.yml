@@ -56,13 +56,9 @@ jobs:
             builds/Cookie-AutoDelete-Next-Edition_*_Firefox-unsigned.zip
             builds/SHA256SUMS.txt
           if-no-files-found: error
-      - name: Codecov.io Coverage upload
-        uses: codecov/codecov-action@v7
+      - name: Archive Code Coverage Results
+        uses: actions/upload-artifact@v7
         with:
-          fail_ci_if_error: true
-          directory: ./coverage/
-          token: ${{ secrets.CODECOV_TOKEN }} # Optional as it is open source repo
-      - name: Coveralls.io Coverage Upload
-        uses: coverallsapp/github-action@v2.3.8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: coverage
+          path: coverage
+          if-no-files-found: error
