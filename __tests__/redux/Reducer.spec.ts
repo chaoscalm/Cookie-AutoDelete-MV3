@@ -20,7 +20,11 @@ import {
 } from '../../src/typings/Enums';
 import { Expression, StoreIdToExpressionList } from '../../src/typings/Global';
 
-import activityLog, { addActivity, removeActivity, clearActivities } from '../../src/redux/ActivityLogSlice';
+import activityLog, {
+  addActivity,
+  removeActivity,
+  clearActivities,
+} from '../../src/redux/ActivityLogSlice';
 import cache from '../../src/redux/CacheSlice';
 import cookieDeletedCounterReducers, {
   incrementCookieDeletedCounter,
@@ -55,7 +59,8 @@ const mockExpression: Expression = {
 
 describe('Reducer', () => {
   describe('activityLog', () => {
-    const log1 = {
+    const log1: ActivityLog = {
+      id: 'log1',
       dateTime: 'Thu Jan 10 2019 08:00:00 GMT-0800 (Pacific Standard Time)',
       recentlyCleaned: 0,
       storeIds: {
@@ -64,7 +69,7 @@ describe('Reducer', () => {
       browsingDataCleanup: {},
       siteDataCleaned: false,
     };
-    const log2 = {
+    const log2: Omit<ActivityLog, 'id'> = {
       dateTime: 'Thu Jan 11 2019 08:00:00 GMT-0800 (Pacific Standard Time)',
       recentlyCleaned: 0,
       storeIds: {
@@ -87,14 +92,23 @@ describe('Reducer', () => {
 
     it('should be added to the front', () => {
       const result = activityLog(state, addActivity(log2));
-      expect(result).toEqual([log2, log1]);
+      expect(result).toEqual([
+        {
+          ...log2,
+          id: expect.any(String),
+        },
+        log1,
+      ]);
     });
 
     it('should not be added because no storeIds', () => {
-      const result = activityLog(state, addActivity({
-        ...log2,
-        storeIds: {},
-      }));
+      const result = activityLog(
+        state,
+        addActivity({
+          ...log2,
+          storeIds: {},
+        }),
+      );
       expect(result).toEqual([log1]);
     });
     it('should return empty array on RESET_ALL', () => {
@@ -106,7 +120,10 @@ describe('Reducer', () => {
     const state = 5;
 
     it('should return 0 through RESET_COOKIE_DELETED_COUNTER', () => {
-      const newState = cookieDeletedCounterTotal(state, resetCookieDeletedCounter());
+      const newState = cookieDeletedCounterTotal(
+        state,
+        resetCookieDeletedCounter(),
+      );
       expect(newState).toBe(0);
     });
     it('should return 0 through RESET_ALL', () => {
@@ -114,15 +131,24 @@ describe('Reducer', () => {
       expect(newState).toBe(0);
     });
     it('should return 6', () => {
-      const newState = cookieDeletedCounterTotal(state, incrementCookieDeletedCounter());
+      const newState = cookieDeletedCounterTotal(
+        state,
+        incrementCookieDeletedCounter(),
+      );
       expect(newState).toBe(6);
     });
     it('should return 10', () => {
-      const newState = cookieDeletedCounterTotal(state, incrementCookieDeletedCounter(5));
+      const newState = cookieDeletedCounterTotal(
+        state,
+        incrementCookieDeletedCounter(5),
+      );
       expect(newState).toBe(10);
     });
     it('should return 1 if nothing was given', () => {
-      const newState = cookieDeletedCounterTotal(undefined, incrementCookieDeletedCounter());
+      const newState = cookieDeletedCounterTotal(
+        undefined,
+        incrementCookieDeletedCounter(),
+      );
       expect(newState).toBe(1);
     });
   });
@@ -131,7 +157,10 @@ describe('Reducer', () => {
     const state = 5;
 
     it('should return 0 on RESET_COOKIE_DELETED_COUNTER', () => {
-      const newState = cookieDeletedCounterSession(state, resetCookieDeletedCounter());
+      const newState = cookieDeletedCounterSession(
+        state,
+        resetCookieDeletedCounter(),
+      );
       expect(newState).toBe(0);
     });
     it('should return 0 on RESET_ALL', () => {
@@ -143,11 +172,17 @@ describe('Reducer', () => {
       expect(newState).toBe(0);
     });
     it('should return 6', () => {
-      const newState = cookieDeletedCounterSession(state, incrementCookieDeletedCounter());
+      const newState = cookieDeletedCounterSession(
+        state,
+        incrementCookieDeletedCounter(),
+      );
       expect(newState).toBe(6);
     });
     it('should return 10', () => {
-      const newState = cookieDeletedCounterSession(state, incrementCookieDeletedCounter(5));
+      const newState = cookieDeletedCounterSession(
+        state,
+        incrementCookieDeletedCounter(5),
+      );
       expect(newState).toBe(10);
     });
   });
@@ -156,11 +191,14 @@ describe('Reducer', () => {
     const state = {};
 
     it('should return google.com', () => {
-      const newState = lists(state, addExpression({
-        ...mockExpression,
-        expression: 'google.com',
-        listType: ListType.GREY,
-      }));
+      const newState = lists(
+        state,
+        addExpression({
+          ...mockExpression,
+          expression: 'google.com',
+          listType: ListType.GREY,
+        }),
+      );
       const firstExpression = newState.default[0];
       expect(firstExpression).toHaveProperty('expression', 'google.com');
       expect(firstExpression).toHaveProperty('listType', ListType.GREY);
@@ -168,11 +206,14 @@ describe('Reducer', () => {
     });
 
     it('should return youtube.com for firefox_container_2', () => {
-      const newState = lists(state, addExpression({
-        expression: 'youtube.com',
-        listType: ListType.GREY,
-        storeId: 'firefox_container_2',
-      }));
+      const newState = lists(
+        state,
+        addExpression({
+          expression: 'youtube.com',
+          listType: ListType.GREY,
+          storeId: 'firefox_container_2',
+        }),
+      );
       const firstExpression = newState.firefox_container_2[0];
       expect(firstExpression).toHaveProperty('expression', 'youtube.com');
       expect(firstExpression).toHaveProperty('listType', ListType.GREY);
@@ -180,10 +221,13 @@ describe('Reducer', () => {
     });
 
     it('should return google.com with a default listType of WHITE', () => {
-      const newState = lists(state, addExpression({
-        ...mockExpression,
-        expression: 'google.com',
-      }));
+      const newState = lists(
+        state,
+        addExpression({
+          ...mockExpression,
+          expression: 'google.com',
+        }),
+      );
       const firstExpression = newState.default[0];
       expect(firstExpression).toHaveProperty('expression', 'google.com');
       expect(firstExpression).toHaveProperty('listType', ListType.WHITE);
@@ -325,10 +369,7 @@ describe('Reducer', () => {
     });
 
     it('should return empty object if REMOVE_LIST was called with empty state/list.', () => {
-      const newState = lists(
-        {},
-        removeList('firefox-container-9'),
-      );
+      const newState = lists({}, removeList('firefox-container-9'));
       expect(newState).toEqual({});
     });
 
@@ -341,7 +382,10 @@ describe('Reducer', () => {
     });
 
     it('should remove list if last expression entry was removed.', () => {
-      const newState = lists(state, removeExpression(state['firefox-container-2'][0]));
+      const newState = lists(
+        state,
+        removeExpression(state['firefox-container-2'][0]),
+      );
       expect(Object.keys(newState)).toEqual(
         expect.not.arrayContaining(['firefox-container-2']),
       );
@@ -360,7 +404,10 @@ describe('Reducer', () => {
       expect(newState).toEqual(mockExpression);
     });
     it('should use default empty expression if none was given', () => {
-      const newState = expression(undefined, addExpression({ ...mockExpression }));
+      const newState = expression(
+        undefined,
+        addExpression({ ...mockExpression }),
+      );
       expect(newState).toEqual({
         ...mockExpression,
         id: '1',
@@ -404,18 +451,24 @@ describe('Reducer', () => {
       expect(newState).toEqual(state);
     });
     it('should be an empty array if no cleanSiteData entries were provided', () => {
-      const newState = expressions([], addExpression({
-        ...mockExpression,
-      }));
+      const newState = expressions(
+        [],
+        addExpression({
+          ...mockExpression,
+        }),
+      );
       expect(newState[0]).toEqual(
         expect.objectContaining({ cleanSiteData: [] }),
       );
     });
     it('should be included in cleanSiteData if siteDataType entries were provided', () => {
-      const newState = expressions([], addExpression({
-        ...mockExpression,
-        cleanSiteData: [SiteDataType.LOCALSTORAGE, SiteDataType.INDEXEDDB],
-      }));
+      const newState = expressions(
+        [],
+        addExpression({
+          ...mockExpression,
+          cleanSiteData: [SiteDataType.LOCALSTORAGE, SiteDataType.INDEXEDDB],
+        }),
+      );
       expect(newState[0]).toEqual(
         expect.objectContaining({
           cleanSiteData: expect.arrayContaining([
@@ -440,10 +493,13 @@ describe('Reducer', () => {
 
   describe('settings', () => {
     it('should update settings accordingly', () => {
-      const newState = settings(initialSettings, updateSetting({
-        name: SettingID.ACTIVE_MODE,
-        value: true,
-      }));
+      const newState = settings(
+        initialSettings,
+        updateSetting({
+          name: SettingID.ACTIVE_MODE,
+          value: true,
+        }),
+      );
       expect(newState[SettingID.ACTIVE_MODE]).toEqual(
         expect.objectContaining({
           name: SettingID.ACTIVE_MODE,

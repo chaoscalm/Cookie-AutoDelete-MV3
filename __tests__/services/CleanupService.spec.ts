@@ -28,7 +28,6 @@ import {
 import type { Expression } from '../../src/typings/Global';
 
 import { produce } from 'immer';
-import { advanceTo, clear } from 'jest-date-mock';
 import { when } from 'jest-when';
 import {
   cleanCookies,
@@ -279,7 +278,7 @@ describe('CleanupService', () => {
       .mockResolvedValue(true as never);
   });
   afterEach(() => {
-    clear();
+    jest.useRealTimers();
   });
   describe('cleanCookies()', () => {
     const cookies = [
@@ -354,7 +353,7 @@ describe('CleanupService', () => {
             url: 'moz-extension://test/settings/settings.html',
           },
         ] as never);
-      advanceTo(new Date('2020-06-01 12:34:56'));
+      jest.useFakeTimers({ now: new Date('2020-06-01 12:34:56') });
     });
     afterEach(() => {
       when(global.browser.extension.isAllowedIncognitoAccess)

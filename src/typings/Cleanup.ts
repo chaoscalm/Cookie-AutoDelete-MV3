@@ -26,6 +26,7 @@ export interface CleanupProperties {
 }
 
 export type ActivityLog = {
+  id: string;
   dateTime: string;
   recentlyCleaned: number;
   storeIds: {

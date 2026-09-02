@@ -2,9 +2,9 @@ import { crx } from '@crxjs/vite-plugin';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
 import { defineConfig, type UserConfig } from 'vite';
-import manifestJson from './manifest.json';
-import packageJson from './package.json';
-import * as DIR from './tools/directories';
+import manifestJson from './manifest.json' with { type: 'json' };
+import packageJson from './package.json' with { type: 'json' };
+import * as DIR from './tools/directories.js';
 
 const dirname = import.meta.dirname || new URL('.', import.meta.url).pathname;
 
@@ -76,19 +76,19 @@ export default defineConfig(() => {
       outDir: resolve(dirname, `dist`, `${browser}`),
       emptyOutDir: true,
       sourcemap: false,
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks(id) {
-            if (
-              id.includes('react') ||
-              id.includes('redux') ||
-              id.includes('fontawsome')
-            ) {
-              return 'react';
-            }
-            if (id.includes('webextension-polyfill')) {
-              return 'webextension-polyfill';
-            }
+          codeSplitting: {
+            groups: [
+              {
+                name: 'react',
+                test: /react|redux|fontawesome/,
+              },
+              {
+                name: 'webextension-polyfill',
+                test: /webextension-polyfill/,
+              },
+            ],
           },
         },
       },
@@ -97,7 +97,12 @@ export default defineConfig(() => {
     css: {
       preprocessorOptions: {
         scss: {
-          silenceDeprecations: ['import', 'color-functions', 'global-builtin'],
+          silenceDeprecations: [
+            'import',
+            'color-functions',
+            'global-builtin',
+            'if-function',
+          ],
         },
       },
     },

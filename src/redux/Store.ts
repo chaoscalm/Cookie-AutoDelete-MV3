@@ -19,7 +19,6 @@ import {
   type ThunkAction,
   type UnknownAction,
 } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
 import { alias, createWrapStore } from 'webext-redux';
 
 // slices
@@ -85,12 +84,6 @@ export const configureWrapStore = (state: State) => {
     },
     middleware: (getDefaultMiddleware) => {
       const middleware = getDefaultMiddleware();
-
-      // Conditionally add another middleware in dev
-      if (process.env.NODE_ENV !== 'production') {
-        middleware.push(logger);
-      }
-
       return middleware.prepend(alias(aliases));
     },
   });

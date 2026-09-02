@@ -1,7 +1,7 @@
 // @ts-check
+import eslintReact from '@eslint-react/eslint-plugin';
 import eslint from '@eslint/js';
 import prettier from 'eslint-config-prettier/flat';
-import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import { globalIgnores, defineConfig } from 'eslint/config';
 import globals from 'globals';
@@ -23,11 +23,6 @@ export default defineConfig(
         sourceType: 'module',
       },
     },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
   },
 
   {
@@ -35,7 +30,7 @@ export default defineConfig(
     extends: [
       eslint.configs.recommended,
       tsEslint.configs.strict,
-      react.configs.flat.recommended,
+      eslintReact.configs['recommended-typescript'],
       reactHooks.configs.flat.recommended,
       prettier,
     ],
@@ -52,11 +47,6 @@ export default defineConfig(
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { caughtErrors: 'none' }],
       '@typescript-eslint/no-explicit-any': 'off', // Maybe set to 'warn' later
-
-      // react rules
-      'react/jsx-uses-react': 'off',
-      'react/prop-types': 'off',
-      'react/react-in-jsx-scope': 'off',
     },
   },
 );

@@ -60,7 +60,7 @@ const ActivityTable: React.FunctionComponent<ActivityTableProps> = (props) => {
       id="accordion"
     >
       {filtered.map((log, index) => (
-        <ActivityItem key={index} log={log} index={index} />
+        <ActivityItem key={log.id} log={log} index={index} />
       ))}
     </div>
   );

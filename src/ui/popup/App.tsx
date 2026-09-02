@@ -78,6 +78,7 @@ class App extends Component<PopupAppComponentProps, InitialState> {
       currentWindow: true,
     });
 
+    // eslint-disable-next-line @eslint-react/no-set-state-in-component-did-mount
     this.setState({
       storeId: parseCookieStoreId(
         this.props.contextualIdentities,

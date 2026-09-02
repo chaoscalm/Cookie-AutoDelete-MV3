@@ -41,6 +41,7 @@ class App extends Component<OwnProps> {
     }px`;
     const tab = await browser.tabs.getCurrent();
     const tabURL = new URL(tab.url || '');
+    // eslint-disable-next-line @eslint-react/no-set-state-in-component-did-mount
     this.setState({
       activeTab:
         tabURL.hash !== '' || undefined

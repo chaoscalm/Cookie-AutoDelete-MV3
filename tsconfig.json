@@ -41,7 +41,6 @@
     "types": [
       "react",
       "react-dom",
-      "redux-logger",
       "bootstrap",
       "shortid"
     ], /* Type declaration files to be included in compilation. */

@@ -1,12 +1,13 @@
 import {
-    createAction,
-    createSlice,
-    isAnyOf,
-    type PayloadAction,
+  createAction,
+  createSlice,
+  isAnyOf,
+  type PayloadAction,
 } from '@reduxjs/toolkit';
 import type { ActivityLog } from '../typings/Cleanup';
 import { ReduxConstants } from './ReduxConstants';
 import { resetAll } from './SharedActions';
+import shortid from 'shortid';
 
 const initialState: ReadonlyArray<ActivityLog> = [];
 
@@ -18,15 +19,24 @@ const actions = {
 const activityLogSlice = createSlice({
   name: 'activityLog',
   initialState,
+
   reducers: {
-    addActivity: (state, action: PayloadAction<ActivityLog>) => {
-      if (
-        Object.keys(action.payload.storeIds).length > 0 ||
-        action.payload.siteDataCleaned
-      ) {
-        return [action.payload, ...state].slice(0, 10);
-      }
-      return state;
+    addActivity: {
+      reducer: (state, action: PayloadAction<ActivityLog>) => {
+        if (
+          Object.keys(action.payload.storeIds).length > 0 ||
+          action.payload.siteDataCleaned
+        ) {
+          return [action.payload, ...state].slice(0, 10);
+        }
+        return state;
+      },
+      prepare: (activity: Omit<ActivityLog, 'id'>) => ({
+        payload: {
+          ...activity,
+          id: shortid.generate(),
+        },
+      }),
     },
     removeActivity: (state, action: PayloadAction<ActivityLog>) => {
       return state.filter((log) => log.dateTime !== action.payload.dateTime);

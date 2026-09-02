@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import archiver from 'archiver';
+import { ZipArchive } from 'archiver';
 import * as DIR from './directories.js';
 
 const browser = process.argv[2];
@@ -27,7 +27,7 @@ const outputPath = path.resolve(DIR.BUILDS, filename);
 
 await new Promise((resolve, reject) => {
   const output = fs.createWriteStream(outputPath);
-  const archive = archiver('zip', { zlib: { level: 9 } });
+  const archive = new ZipArchive({ zlib: { level: 9 } });
 
   output.on('close', resolve);
   output.on('error', reject);

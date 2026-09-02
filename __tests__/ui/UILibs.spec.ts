@@ -13,7 +13,6 @@
  * SOFTWARE.
  */
 
-import { advanceTo, clear } from 'jest-date-mock';
 import {
   appendDynamicTimestamp,
   downloadObjectAsJSON,
@@ -21,24 +20,24 @@ import {
 
 describe('appendDynamicTimestamp', () => {
   afterEach(() => {
-    clear();
+    jest.useRealTimers();
   });
   it('should return dynamically generated timestamp.', () => {
     expect.assertions(2);
-    advanceTo(new Date('2020-05-01 12:34:56'));
+    jest.useFakeTimers({ now: new Date('2020-05-01 12:34:56') });
     expect(appendDynamicTimestamp()).toEqual('2020-05-01_12.34.56');
-    advanceTo(new Date('2345-12-31 23:59:59'));
+    jest.setSystemTime(new Date('2345-12-31 23:59:59'));
     expect(appendDynamicTimestamp()).toEqual('2345-12-31_23.59.59');
   });
 });
 
 describe('downloadObjectAsJSON', () => {
   afterEach(() => {
-    clear();
+    jest.useRealTimers();
   });
   it('should use default Export Name if one is not supplied', () => {
     expect.assertions(1);
-    advanceTo(new Date('2020-05-08 01:23:45'));
+    jest.useFakeTimers({ now: new Date('2020-05-08 01:23:45') });
     expect(downloadObjectAsJSON({})).toEqual({
       downloadHref: 'data:text/json;charset=urf-8,%7B%7D',
       downloadName: 'CAD_ExportedData_2020-05-08_01.23.45.json',
@@ -47,7 +46,7 @@ describe('downloadObjectAsJSON', () => {
   });
   it('should parse the object for downloading.', () => {
     expect.assertions(1);
-    advanceTo(new Date('2020-05-08 01:23:45'));
+    jest.useFakeTimers({ now: new Date('2020-05-08 01:23:45') });
     expect(
       downloadObjectAsJSON(
         { test: 'string', foo: 'bar', export: true, number: 123 },

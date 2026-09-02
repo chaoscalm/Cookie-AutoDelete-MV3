@@ -34,6 +34,7 @@ class ActivityLog extends React.Component<ActivityLogProps> {
     decisionFilter: FilterOptions.NONE,
   };
 
+  // eslint-disable-next-line @eslint-react/no-unused-class-component-members
   public setNewFilter(filter: FilterOptions) {
     this.setState({
       decisionFilter: filter,

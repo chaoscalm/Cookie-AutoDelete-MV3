@@ -25,22 +25,24 @@ import { browserDetect } from '../../../utils/BrowserDetect';
 const displayReleaseNotes = (releases: ReleaseNote[]) => {
   return (
     <div className="col">
-      {releases.map((release, index) => [
-        <span
-          style={{
-            fontWeight: 'bold',
-            marginLeft: '10px',
-          }}
-          key={`release1${index}`}
-        >
-          {release.version}
-        </span>,
-        <ul key={`release2${index}`}>
-          {release.notes.map((element, index2) => (
-            <li key={`release3${index2}`}>{element}</li>
-          ))}
-        </ul>,
-      ])}
+      {releases.map((release) => (
+        <React.Fragment key={release.version}>
+          <span
+            style={{
+              fontWeight: 'bold',
+              marginLeft: '10px',
+            }}
+          >
+            {release.version}
+          </span>
+
+          <ul>
+            {release.notes.map((element) => (
+              <li key={element}>{element}</li>
+            ))}
+          </ul>
+        </React.Fragment>
+      ))}
     </div>
   );
 };

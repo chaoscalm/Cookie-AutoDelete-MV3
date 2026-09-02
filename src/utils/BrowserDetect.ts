@@ -21,8 +21,8 @@ export function browserDetect(): BrowserName {
     return browserDetect.prototype._cachedResult;
   }
 
-  let isIE = false;
-  let isEdge = false;
+  // let isIE = false;
+  // let isEdge = false;
 
   const detectByUserAgent = () => {
     if (navigator.userAgent.indexOf('Chrome') !== -1) {

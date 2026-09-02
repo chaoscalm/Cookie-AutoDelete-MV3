@@ -113,7 +113,7 @@ const config = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFilesAfterEnv: ['jest-date-mock', '<rootDir>/__tests__/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup.js'],
 
   // The path to a module that runs some code to configure or set up the testing framework before each test
   // setupTestFrameworkScriptFile: null,

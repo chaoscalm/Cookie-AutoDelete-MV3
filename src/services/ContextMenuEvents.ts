@@ -241,6 +241,7 @@ export default class ContextMenuEvents extends StoreUser {
     // Separator
     ContextMenuEvents.menuCreate({
       type: 'separator',
+      // eslint-disable-next-line no-useless-assignment
       id: `s${separatorId++}`,
     });
     // Active Mode

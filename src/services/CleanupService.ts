@@ -880,6 +880,7 @@ export const cleanCookiesOperation = async (
   const deletedSiteDataArrays: ActivityLog['browsingDataCleanup'] = {};
   const setOfDeletedDomainCookies = new Set<string>();
   const cachedResults: Required<ActivityLog> = {
+    id: 'test',
     dateTime: new Date().toString(),
     recentlyCleaned: 0,
     storeIds: {},
