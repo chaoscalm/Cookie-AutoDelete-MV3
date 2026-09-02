@@ -122,14 +122,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           git-commit: ${{ github.event.pull_request.head.sha }}
       - name: Upload Artifact for Mozilla Firefox Build
-        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
         uses: actions/upload-artifact@v7
         with:
           name: firefox-build
           path: builds/Cookie-AutoDelete-Next-Edition_*_Firefox-unsigned.zip
           if-no-files-found: error
       - name: Upload Artifact for Google Chrome Build
-        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
         uses: actions/upload-artifact@v7
         with:
           name: chrome-build
