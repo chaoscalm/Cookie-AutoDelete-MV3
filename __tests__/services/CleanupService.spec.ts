@@ -2283,30 +2283,17 @@ describe('CleanupService', () => {
 
     it('should not have youtube.com in any containers, cleanDiscardedTabs is false', () => {
       return returnContainersOfOpenTabDomains(false, false).then((results) => {
-        expect(
-          results['firefox-default'] &&
-            results['firefox-default'].includes('youtube.com'),
-        ).toBe(false);
-        expect(
-          results['firefox-container-1'] &&
-            results['firefox-container-1'].includes('youtube.com'),
-        ).toBe(false);
-        expect(results['0'] && results['0'].includes('youtube.com')).toBe(
-          false,
-        );
-        expect(results['1'] && results['1'].includes('youtube.com')).toBe(
-          false,
-        );
+        expect(results['firefox-default']).not.toContain('youtube.com');
+        expect(results['firefox-container-1']).not.toContain('youtube.com');
+        expect(results['0']).not.toContain('youtube.com');
+        expect(results['1']).not.toContain('youtube.com');
         return Promise.resolve();
       });
     });
 
     it('should not have discarded.net in firefox-container-1/Personal when cleanDiscardedTabs is true', () => {
       return returnContainersOfOpenTabDomains(false, true).then((results) => {
-        expect(
-          results['firefox-container-1'] &&
-            results['firefox-container-1'].includes('discarded.net'),
-        ).toBe(false);
+        expect(results['firefox-container-1']).not.toContain('discarded.net');
         return Promise.resolve();
       });
     });
